@@ -4,7 +4,7 @@ JSON to XML Conversion Library
 
 **Note: This project in not yet stable. You are free to contribute, but please take note of the unstable nature.**
 
-This library is designed to be an open-source project which allows for the conversion between JSON and XML. While this project is written in TypeScript, the project compiles into normal JavaScript for deployment.
+This library is designed to be an open-source project which allows for the conversion between JSON and XML in JavaScript. While this project is written in TypeScript, the project compiles into normal JavaScript for deployment.
 
 License
 ----------
