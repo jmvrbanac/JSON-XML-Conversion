@@ -1,7 +1,7 @@
 defaultTasks "minify"
 
 // Change this to name of your starting script file in the src dir.
-def mainModule = "JSONtoXML"
+def mainModule = "JsonXml"
 
 task removeTarget(type:Delete) {
 	delete "target/"

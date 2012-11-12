@@ -24,7 +24,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */ 
 
-export class JSONtoXML {
+export class JsonXml {
 
 	//TODO: Make this more robust
 	private static buildAttributeString(name:string, value:string) {
@@ -43,7 +43,7 @@ export class JSONtoXML {
 	private static convertArray(name:string, children:any[]):string {
 		var result:string = "";
 		for (var i:number = 0; i < children.length; i++) {
-			result += JSONtoXML.jsonConvert(name, children[i]).composite;
+			result += jsonConvert(name, children[i]).composite;
 		}
 		return result;
 	}
@@ -56,16 +56,16 @@ export class JSONtoXML {
 		for (var childName in obj) {
 			var child = obj[childName];
 			if (child instanceof Array) {
-				innerXML += JSONtoXML.convertArray(childName, child);
+				innerXML += convertArray(childName, child);
 			} else if (typeof child === "object") {
-				innerXML += JSONtoXML.jsonConvert(childName, child).composite;
+				innerXML += jsonConvert(childName, child).composite;
 			} else {
-				attributeXML += JSONtoXML.buildAttributeString(childName, child);
+				attributeXML += buildAttributeString(childName, child);
 			}
 		}
 
 		var result:string;
-		result = JSONtoXML.buildNodeString(name, attributeXML, innerXML);
+		result = buildNodeString(name, attributeXML, innerXML);
 
 		return {"composite":result, "innerXML":innerXML, "attributeXML":attributeXML};
 	}
@@ -83,7 +83,27 @@ export class JSONtoXML {
 		}
 
 		// Kick off recursive conversion
-		result += JSONtoXML.jsonConvert("", jsonObj).innerXML;
+		result += jsonConvert("", jsonObj).innerXML;
+
+		return result;
+	}
+
+	public static convertStringToXmlNode(xmlStr:string):Document {
+		var xml:any;
+		try { // Standard
+			var domParser = new DOMParser();
+			xml = domParser.parseFromString( xmlStr , "text/xml" );
+		} catch(e) { // IE
+			xml = new ActiveXObject( "Microsoft.XMLDOM" );
+			xml.async = "false";
+			xml.loadXML( xmlStr );
+		}
+
+		return xml;
+	}
+
+	public static convertToJson(xmlStr:string):Object {
+		var result:any = {};
 
 		return result;
 	}

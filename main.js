@@ -7,7 +7,7 @@ require(
     'jasmine-html',
     'jasmine-console',
     'jasmine-junit',
-    'spec/SpecJSONtoXML'
+    'spec/SpecJsonXml'
   ],
 function() {
   'use strict';
