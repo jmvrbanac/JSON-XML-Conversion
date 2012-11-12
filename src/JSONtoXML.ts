@@ -40,15 +40,15 @@ export class JSONtoXML {
 		return result;
 	}
 
-	private static convertArray(children:any[]):string {
+	private static convertArray(name:string, children:any[], parent:Object):string {
 		var result:string = "";
 		for (var i:number = 0; i < children.length; i++) {
-			result += JSONtoXML.jsonConvert("", children[i]);
+			result += JSONtoXML.jsonConvert(name, children[i]).composite;
 		}
 		return result;
 	}
 
-	private static jsonConvert(name:string, obj:Object):string {
+	private static jsonConvert(name:string, obj:Object):any {
 		var attributeXML:string = "";
 		var innerXML:string = "";
 		var result:string = "";
@@ -56,9 +56,9 @@ export class JSONtoXML {
 		for (var childName in obj) {
 			var child = obj[childName];
 			if (child instanceof Array) {
-				innerXML += JSONtoXML.convertArray(child);
+				innerXML += JSONtoXML.convertArray(childName, child, obj);
 			} else if (typeof child === "object") {
-				innerXML += JSONtoXML.jsonConvert(childName, child);
+				innerXML += JSONtoXML.jsonConvert(childName, child).composite;
 			} else {
 				attributeXML += JSONtoXML.buildAttributeString(childName, child);
 			}
@@ -71,16 +71,24 @@ export class JSONtoXML {
 			result = JSONtoXML.buildNodeString(name, attributeXML, innerXML)
 		}
 
-		return result;
+		return {"composite":result, "innerXML":innerXML, "attributeXML":attributeXML};
 	}
 
-	public static convertToXML(jsonObj:Object):string {
+	public static convertToXML(jsonObj:Object, addHeader:Boolean):string {
 		// Make sure that we are actually dealing with an object
 		if (typeof jsonObj !== "object") {
 			return null;
 		}
+
+		var result:string = "";
 		
-		var result:string = JSONtoXML.jsonConvert("", jsonObj);
+		if (addHeader) {
+			result += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+		}
+
+		// Kick off recursive conversion
+		result += JSONtoXML.jsonConvert("", jsonObj).composite;
+
 		return result;
 	}
 }

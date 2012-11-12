@@ -26,15 +26,25 @@ define(["jasmine", "JSONtoXML"], function (jasmine, __Module__) {
                 expect(result).toBe("<temp trace=\"boom\"></temp>");
             });
 
-            /*it("it should be able to convert an object with a single array property", function() {
+            it("it should be able to convert an object with a single array property", function() {
                 var result = JSONtoXML.convertToXML({"temp":{"child":[{"trace":"boom"}]}});
-                expect(result).toBe("<temp trace=\"boom\"></temp>");
-            });*/
+                expect(result).toBe("<temp><child trace=\"boom\"></child></temp>");
+            });
+
+            it("it should be able to convert an object with a single array which has a child object", function() {
+                var result = JSONtoXML.convertToXML({"temp":{"child":[{"trace":{"tash":"boom"}}]}});
+                expect(result).toBe("<temp><child><trace tash=\"boom\"></trace></child></temp>");
+            });
 
             it("it should be able to convert an object with a child object", function() {
                 var result = JSONtoXML.convertToXML({"temp":{"child":{}}});
                 expect(result).toBe("<temp><child></child></temp>");
             });
+
+            it("it should be able to add an xml header", function() {
+                var result = JSONtoXML.convertToXML({"temp":{}}, true);
+                expect(result).toBe("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<temp></temp>");
+            })
         });
     });
 });
