@@ -65,11 +65,7 @@ export class JSONtoXML {
 		}
 
 		var result:string;
-		if (name === "") {
-			result = innerXML;
-		} else {
-			result = JSONtoXML.buildNodeString(name, attributeXML, innerXML)
-		}
+		result = JSONtoXML.buildNodeString(name, attributeXML, innerXML);
 
 		return {"composite":result, "innerXML":innerXML, "attributeXML":attributeXML};
 	}
@@ -87,7 +83,7 @@ export class JSONtoXML {
 		}
 
 		// Kick off recursive conversion
-		result += JSONtoXML.jsonConvert("", jsonObj).composite;
+		result += JSONtoXML.jsonConvert("", jsonObj).innerXML;
 
 		return result;
 	}
