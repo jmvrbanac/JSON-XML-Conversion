@@ -40,7 +40,7 @@ export class JSONtoXML {
 		return result;
 	}
 
-	private static convertArray(name:string, children:any[], parent:Object):string {
+	private static convertArray(name:string, children:any[]):string {
 		var result:string = "";
 		for (var i:number = 0; i < children.length; i++) {
 			result += JSONtoXML.jsonConvert(name, children[i]).composite;
@@ -56,7 +56,7 @@ export class JSONtoXML {
 		for (var childName in obj) {
 			var child = obj[childName];
 			if (child instanceof Array) {
-				innerXML += JSONtoXML.convertArray(childName, child, obj);
+				innerXML += JSONtoXML.convertArray(childName, child);
 			} else if (typeof child === "object") {
 				innerXML += JSONtoXML.jsonConvert(childName, child).composite;
 			} else {
